@@ -1,4 +1,6 @@
+resource null_resource "mynull" {}
+
 module "uses-role" {
   source = "./module"
-  depends_on = [aws_iam_policy.example]
+  depends_on = [ null_resource.mynull ]
 }
