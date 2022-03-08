@@ -36,16 +36,26 @@ terraform init
 
 This is the output of initializing the Terraform code:
 ```shell
+Initializing modules...
+
 Initializing the backend...
 
 Initializing provider plugins...
-- Reusing previous version of hashicorp/aws from the dependency lock file
+- Finding latest version of hashicorp/null...
+- Finding latest version of hashicorp/aws...
 - Installing hashicorp/aws v4.4.0...
 - Installed hashicorp/aws v4.4.0 (self-signed, key ID 34365D9472D7468F)
+- Installing hashicorp/null v3.1.0...
+- Installed hashicorp/null v3.1.0 (self-signed, key ID 34365D9472D7468F)
 
 Partner and community providers are signed by their developers.
 If you'd like to know more about provider signing, you can read about it here:
 https://www.terraform.io/docs/plugins/signing.html
+
+Terraform has created a lock file .terraform.lock.hcl to record the provider
+selections it made above. Include this file in your version control repository
+so that Terraform can guarantee to make the same selections by default when
+you run "terraform init" in the future.
 
 Terraform has been successfully initialized!
 
@@ -71,7 +81,12 @@ Resource actions are indicated with the following symbols:
 
 Terraform will perform the following actions:
 
-  # aws_iam_role_policy.example will be created
+  # null_resource.mynull will be created
+  + resource "null_resource" "mynull" {
+      + id = (known after apply)
+    }
+
+  # module.uses-role.aws_iam_role_policy.example will be created
   + resource "aws_iam_role_policy" "example" {
       + id     = (known after apply)
       + name   = "example"
@@ -92,7 +107,7 @@ Terraform will perform the following actions:
       + role   = "andrii-tfe-test-for-ag"
     }
 
-Plan: 1 to add, 0 to change, 0 to destroy.
+Plan: 2 to add, 0 to change, 0 to destroy.
 
 Do you want to perform these actions?
   Terraform will perform the actions described above.
@@ -100,10 +115,12 @@ Do you want to perform these actions?
 
   Enter a value: yes
 
-aws_iam_role_policy.example: Creating...
-aws_iam_role_policy.example: Creation complete after 0s [id=andrii-tfe-test-for-ag:example]
+null_resource.mynull: Creating...
+null_resource.mynull: Creation complete after 0s [id=6324281576771717706]
+module.uses-role.aws_iam_role_policy.example: Creating...
+module.uses-role.aws_iam_role_policy.example: Creation complete after 1s [id=andrii-tfe-test-for-ag:example]
 
-Apply complete! Resources: 1 added, 0 changed, 0 destroyed.
+Apply complete! Resources: 2 added, 0 changed, 0 destroyed
 ```
 
 - Destroy the resources 
@@ -116,7 +133,12 @@ Resource actions are indicated with the following symbols:
 
 Terraform will perform the following actions:
 
-  # aws_iam_role_policy.example will be destroyed
+  # null_resource.mynull will be destroyed
+  - resource "null_resource" "mynull" {
+      - id = "6324281576771717706" -> null
+    }
+
+  # module.uses-role.aws_iam_role_policy.example will be destroyed
   - resource "aws_iam_role_policy" "example" {
       - id     = "andrii-tfe-test-for-ag:example" -> null
       - name   = "example" -> null
@@ -137,7 +159,7 @@ Terraform will perform the following actions:
       - role   = "andrii-tfe-test-for-ag" -> null
     }
 
-Plan: 0 to add, 0 to change, 1 to destroy.
+Plan: 0 to add, 0 to change, 2 to destroy.
 
 Do you really want to destroy all resources?
   Terraform will destroy all your managed infrastructure, as shown above.
@@ -145,10 +167,12 @@ Do you really want to destroy all resources?
 
   Enter a value: yes
 
-aws_iam_role_policy.example: Destroying... [id=andrii-tfe-test-for-ag:example]
-aws_iam_role_policy.example: Destruction complete after 0s
+module.uses-role.aws_iam_role_policy.example: Destroying... [id=andrii-tfe-test-for-ag:example]
+module.uses-role.aws_iam_role_policy.example: Destruction complete after 1s
+null_resource.mynull: Destroying... [id=6324281576771717706]
+null_resource.mynull: Destruction complete after 0s
 
-Destroy complete! Resources: 1 destroyed.
+Destroy complete! Resources: 2 destroyed.
 ```
 
 ## Reference Documentation

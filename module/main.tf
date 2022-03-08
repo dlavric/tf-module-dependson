@@ -15,6 +15,3 @@ resource "aws_iam_role_policy" "example" {
   })
 }
 
-provider "aws" {
-    region = "us-west-2"
-}
